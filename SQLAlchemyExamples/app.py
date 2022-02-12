@@ -16,10 +16,11 @@ from forms import TransactionForm
 from tools import (generate_uri_from_file,
                    get_id_to_symbol_dict,)
 #==========================================
-database_URI = generate_uri_from_file('db_config.yml')
+#--------Create Flask app
+app = Flask(__name__)
 
 #--------Add URI to flask
-app = Flask(__name__)
+database_URI = generate_uri_from_file('db_config.yml')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_DATABASE_URI'] = database_URI
  
