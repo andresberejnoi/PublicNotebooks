@@ -1,0 +1,26 @@
+{% extends "bootstrap/base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block styles %}
+{{super()}}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <h3>Enter Transactions Manually</h3>
+  <hr>
+    {{ wtf.quick_form(form) }}
+  <hr>
+  {{ div|safe }}
+  {{ script|safe }}
+
+  <p><a href="{{ url_for('portfolio') }}">Check portfolio</a></p>
+  <p><a href="{{ url_for('transactions') }}">Check transactions</a></p>
+</div>
+{% endblock %}
+
+
+{% block scripts %}
+{{super()}}
+{% endblock %}
+
