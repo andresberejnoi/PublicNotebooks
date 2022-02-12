@@ -14,7 +14,6 @@ class Cryptocurrency(db.Model):
                              primary_key=True)  
     ticker       = db.Column(db.String(32) , 
                              nullable=False, unique=True) 
-    name         = db.Column(db.String(255), nullable=True)
     last_updated = db.Column(db.DateTime, 
                              server_default=db.func.now(), 
                              onupdate=db.func.now())
@@ -23,12 +22,11 @@ class Cryptocurrency(db.Model):
                                    backref='cryptocurrencies', 
                                    lazy=True)
 
-    def __init__(self, ticker, name="",):
+    def __init__(self, ticker,):
         self.ticker = ticker
-        self.name   = name
     
     def __repr__(self):
-        return f"<Coin: ticker={self.ticker}, name={self.name}>"
+        return f"<Coin: ticker={self.ticker}>"
 
 
 class Transaction(db.Model):
