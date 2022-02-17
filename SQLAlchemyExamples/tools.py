@@ -20,3 +20,7 @@ def generate_uri_from_file(config_file='db_config.yml'):
 def get_id_to_symbol_dict(db):
     id_to_symbol_map = dict(db.session.query(Cryptocurrency.id,Cryptocurrency.ticker).all())
     return id_to_symbol_map
+
+def get_symbol_to_id_dict(db):
+    sym_to_id_map = dict(db.session.query(Cryptocurrency.ticker, Cryptocurrency.id).all())
+    return sym_to_id_map
