@@ -17,4 +17,4 @@ To recreate the environment, do the following:
 conda env create -f environment.yml
 ```
 
-Also, my OS is Ubuntu 20.04, just in case.
+Also, my OS is Ubuntu 20.04, just in case. 
