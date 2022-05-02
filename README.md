@@ -10,7 +10,7 @@ This folder contains a small toy project using Flask and SQLAlchemy for a simple
 ## - 2022 Crypto Portfolio Tracking
 I created a weighted portfolio of the top 20 cryptocurrencies at the beginning of the year. Every month I write an update about the performance. 
 
-This folder contains the notebooks that I use to produce the charts in my posts.
+This folder contains the notebooks that I use to produce the charts in my posts. I also added the conda environment file that can be used to reproduce everything.
 
 **Post List**
 
@@ -18,11 +18,11 @@ This folder contains the notebooks that I use to produce the charts in my posts.
 
 1. [January Update](https://andresberejnoi.com/crypto-portfolio-monthly-update-month-one/)
 
-2. [February Update]()
+2. [February Update](https://andresberejnoi.com/my-crypto-portfolio-february-update/)
 
-3.
+3. [March Updte](https://andresberejnoi.com/good-news-on-my-crypto-portfolio-march-update/)
 
-4.
+4. [April Update](https://andresberejnoi.com/pain-continues-in-crypto-markets-april-summary/)
 
 5.
 6.
