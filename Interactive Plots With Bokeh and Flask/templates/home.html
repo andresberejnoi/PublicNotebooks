@@ -1,0 +1,38 @@
+<!-- 
+<!DOCTYPE html>
+<html lang="en"> -->
+
+{% extends "bootstrap/base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% block content %}
+    <head>
+        <meta charset="utf-8">
+        <title>{{ title }}</title>
+
+        <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/bokeh/2.2.3/bokeh.min.css"
+            rel="stylesheet" type="text/css">
+        <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/bokeh/2.2.3/bokeh-widgets.css"
+            rel="stylesheet" type="text/css">
+        <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/bokeh/2.2.3/bokeh-tables.css"
+            rel="stylesheet" type="text/css">
+    </head>
+    <body>
+        <div class="container">
+
+            <h1>Historic Price Chart for {{trading_pair}}</h1>
+            {{ div|safe }}
+            {{ script|safe }}
+
+            <p><a href="{{ url_for('home') }}">back home</a></p>
+        </div>
+
+    </body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bokeh/2.4.2/bokeh.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bokeh/2.4.2/bokeh-widgets.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bokeh/2.4.2/bokeh-tables.js"></script>
+
+{% endblock %}
+  <!-- </html> -->
