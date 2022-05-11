@@ -58,7 +58,7 @@ def get_bokeh_figure(df, trading_pair):
             '@date':"datetime"
         },
         mode='vline',   #other modes: 'mouse'
-        #renderers=[data_line], #specify which lines this hovertool works with
+        renderers=[data_line], #specify which lines this hovertool works with
     )
     plot_fig.add_tools(hover_tool)
     return plot_fig
