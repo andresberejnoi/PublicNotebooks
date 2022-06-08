@@ -3,7 +3,7 @@ import nato_alphabet as nt
 import sys
 
 def cli():
-    parser = argparse.ArgumentParser(prog='Morse Code Tool')
+    parser = argparse.ArgumentParser(description='Morse Code Tool')
     # parser.add_argument('-s', '--source', action='store_true', help="If present, download new candles from Oanda and add them to the database")
     # parser.add_argument('-t', '--text', nargs='?', const='date_not_provided', type=str,help="Provide date in ISO format to initialize the database for the first time")
     parser.add_argument('-s', '--source', type=str, default=None, help="")
