@@ -1,23 +1,32 @@
 import argparse
 import nato_alphabet as nt
-import sys
+
 
 def cli():
     parser = argparse.ArgumentParser(description='Morse Code Tool')
-    # parser.add_argument('-s', '--source', action='store_true', help="If present, download new candles from Oanda and add them to the database")
-    # parser.add_argument('-t', '--text', nargs='?', const='date_not_provided', type=str,help="Provide date in ISO format to initialize the database for the first time")
-    parser.add_argument('-s', '--source', type=str, default=None, help="")
-    parser.add_argument('-t', '--text', type=str, default='', help="")
+    parser.add_argument('-s', '--source', type=str, default=None, 
+                        help="File containing the text to translate.")
+
+    parser.add_argument('-t', '--text', type=str, default='', 
+                        help="""Enter text to translate directly. If `--source`
+                                is provided, then this option (`--text`) is ignored.""")
     
-    parser.add_argument('-m', '--mode', type=str, choices=['morse','telephony'], default='morse')
-    parser.add_argument('-d', '--direction', type=str, choices=['from_text', 'to_text'], default='from_text', help="")
-    parser.add_argument('-o','--output', type=str, default=None, help="")
+    parser.add_argument('-m', '--mode', type=str, choices=['morse','telephony'], default='morse', 
+                        help="""Choose mode of operation: morse or telephony.""")
+
+    parser.add_argument('-d', '--direction', type=str, choices=['from_text', 'to_text'], default='from_text', 
+                        help="""Select the direction of the convertion. 
+                                If the source text needs to be converted to 
+                                morse code, then choose `from_text` (this is the default)
+                                and if the source text is already morse code
+                                and you want to decrypt it, choose `to_text`.""")
+
+    parser.add_argument('-o','--output', type=str, default=None, 
+                        help="""File where to save the output. If this flag is not
+                                provided, the output will be printed to the terminal.""")
+                                
     args = parser.parse_args()
     return args
-
-
-def simple_cli():
-    pass
 
 
 def main(args):
@@ -25,10 +34,12 @@ def main(args):
     text = ""
     if args.source:
         with open(args.source, 'r') as file_handler:
-            text = file_handler.read().lower()
+            text = file_handler.read()
 
     else:
         text = args.text
+
+    text = text.lower()
 
     #-- get mode and direction of the conversion, and output file
     mode      = args.mode
@@ -44,7 +55,9 @@ def main(args):
         else:
             for letter in text:
                 output_str += nt.TELEPHONY_MAPPER.get(letter, '*') + '^'
+
     elif direction == 'to_text':
+        text = text.strip('^').strip()
         if mode == 'morse':
             print(text.split('^'))
             for letter in text.split('^'):
