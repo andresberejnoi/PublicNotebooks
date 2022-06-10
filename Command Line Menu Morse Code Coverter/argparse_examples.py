@@ -18,7 +18,7 @@ class AddStringAction(argparse.Action):
 
 def cli():
     parser = argparse.ArgumentParser(description='Simple Example')
-    parser.add_argument('-n', '--name', type=str, default='John', hOccupationelp="Name of user")
+    parser.add_argument('-n', '--name', type=str, default='John', help="Name of user")
     parser.add_argument('-a', '--age', type=int, default=31, help="Age of user")
     parser.add_argument('-o', '--occupation', type=str, default='software developer', help=' of user')
     
@@ -54,5 +54,5 @@ def main(args):
 
 
 if __name__ == "__main__":
-    args = fuller_cli()
-    fuller_main(args)
+    args = cli()
+    main(args)
