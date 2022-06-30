@@ -1,4 +1,4 @@
-name: crypto_portfolio_2022
+name: crypto_2022_plotting
 channels:
   - defaults
   - anaconda
@@ -13,5 +13,5 @@ dependencies:
   - requests
   - seaborn
   - pip:
-      - cbpro
-prefix: /home/andresberejnoi/miniconda3/envs/crypto_portfolio_2022
+      - yfinance
+prefix: /home/andresberejnoi/miniconda3/envs/crypto_2022_plotting

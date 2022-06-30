@@ -1,0 +1,17 @@
+name: crypto_2022_fetching
+channels:
+  - defaults
+  - anaconda
+  - conda-forge
+dependencies:
+  - jupyter
+  - pandas
+  - pip
+  - matplotlib
+  - plotly
+  - python=3.9
+  - requests
+  - seaborn
+  - pip:
+      - cbpro
+prefix: /home/andresberejnoi/miniconda3/envs/crypto_2022_fetching
