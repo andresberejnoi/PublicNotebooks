@@ -4,4 +4,4 @@ This folder contains scripts and notebooks related to my blog posts about buildi
 
 Posts:
 - [Feedforward Propagation](https://andresberejnoi.com/how-to-build-a-feedforward-neural-network-in-python/)
-- [Backpropagation](#)
+- [Backpropagation](https://andresberejnoi.com/how-to-implement-backpropagation-with-numpy/)
