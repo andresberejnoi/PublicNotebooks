@@ -260,8 +260,8 @@ def main(args):
     verbose     :bool = args.verbose
 
     ignore_prefix:bool = args.ignore_prefix
-    env_name    :str   = args.env_name
-    output_file :str   = args.output
+    env_name     :str  = args.env_name
+    output_file  :str  = args.output
 
     full_env_output = export_env(from_history=False, no_builds=no_builds)
 
