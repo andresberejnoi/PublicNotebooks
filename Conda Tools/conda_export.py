@@ -76,7 +76,7 @@ def CLI() -> argparse.Namespace:
     parser.add_argument('-v','--use-versions',action='store_true',help="Boolean flag to include package version numbers when using --from-history flag")
     parser.add_argument('--verbose',action='store_true',help="Boolean flag to indicate if output to file should also be printed to terminal")
     
-    parser.add_argument('--ignore-prefix', action='store_true', help="Boolean flag to include the `prefix` line that conda appends to an environment file")
+    parser.add_argument('--include-prefix', action='store_true', help="Boolean flag to include the `prefix` line that conda appends to an environment file")
     parser.add_argument('-n','--env-name',type=str,default=None, help="Give a name to the conda environment. If not provided, use current environment's name")
     parser.add_argument('-o','--output', type=str, default=None, help='Specify an output file to save with environment data. If not provided, it will be printed to the terminal')
     
@@ -152,7 +152,7 @@ def _join_name_version(name_dict:dict, is_pip_package=False) -> str:
 
 def is_pip_section(dependency) -> bool:
     '''This function can be done in one line, 
-    but I don't if it makes it any more readable.'''
+    but it may be more readable this way.'''
     if isinstance(dependency, dict) and 'pip' in dependency:
         return True 
     return False
@@ -229,7 +229,7 @@ def produce_output(output_file:str, env_data:dict, verbose:bool):
         if verbose:
             yaml.dump(env_data, sys.stdout)
 
-def _replace_env_name(new_name:str, reference_env:dict, env_to_modify:dict, ignore_prefix:bool=True) -> dict:
+def _replace_env_name(new_name:str, reference_env:dict, env_to_modify:dict, include_prefix:bool=True) -> dict:
     '''Modifies the `name` and `prefix` sections of Conda's 
     environment dictionary file'''
     if new_name is None:
@@ -246,11 +246,12 @@ def _replace_env_name(new_name:str, reference_env:dict, env_to_modify:dict, igno
         env_to_modify['prefix'] = str(new_path)
 
 
-    if ignore_prefix:
+    if not include_prefix:
         env_to_modify.pop('prefix', 'Key `prefix` NOT found when trying to remove from dictionary')
 
 
     return env_to_modify
+
 
 def main(args):
     #-- extract CLI flags
@@ -259,7 +260,7 @@ def main(args):
     use_versions:bool = args.use_versions
     verbose     :bool = args.verbose
 
-    ignore_prefix:bool = args.ignore_prefix
+    include_prefix:bool = args.include_prefix
     env_name     :str  = args.env_name
     output_file  :str  = args.output
 
@@ -274,6 +275,7 @@ def main(args):
     elif from_history and not use_versions:  #return the standard --from-history response
         final_env_dict = export_env(from_history=True)  #from history
         final_env_dict['channels'] = full_env_output['channels']
+
         _pip_section = get_pip_section(full_env_output['dependencies'])
         if len(_pip_section.values()) > 0:  #this adds the pip part 
             final_env_dict['dependencies'].append(_pip_section)
@@ -292,10 +294,15 @@ def main(args):
         final_env_dict['name']         = full_env_output['name']
         final_env_dict['channels']     = full_env_output['channels']
         final_env_dict['dependencies'] = _merged_dependencies
+
+        _pip_section = get_pip_section(full_env_output['dependencies'])
+        if len(_pip_section.values()) > 0:  #this adds the pip part 
+            final_env_dict['dependencies'].append(_pip_section)
+
         final_env_dict['prefix']       = full_env_output['prefix']
 
     #-- Modify name and prefix if specified
-    final_env_dict = _replace_env_name(env_name, full_env_output, final_env_dict, ignore_prefix=ignore_prefix)
+    final_env_dict = _replace_env_name(env_name, full_env_output, final_env_dict, include_prefix=include_prefix)
 
     #-- Output final result
     produce_output(output_file, final_env_dict, verbose=verbose)
