@@ -53,7 +53,6 @@ def mean_squared_error(target_output, actual_output, derivative=False):
         assert(target_output.shape == actual_output.shape)
     except AssertionError:
         print(f"Shape of target vector: {target_output.shape} does not match shape of actual vector: {actual_output.shape}")
-
     if derivative:
         error = (actual_output - target_output)
     

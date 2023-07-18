@@ -1,4 +1,6 @@
 from activations import *
+import numpy as np
+
 
 
 class NeuralNet(object):
@@ -73,6 +75,19 @@ class NeuralNet(object):
         mat = self.RNG.uniform(lower_bound, upper_bound, (num_rows, num_cols))
         return mat
 
+    @property
+    def shape(self):
+        return tuple(self.topology)
+    
+    @property
+    def n_trainable_params(self):
+        n_params = 0 
+        for weight_mat, bias_mat in zip(self.weight_mats, self.bias_mats):
+            n_params += weight_mat.size + bias_mat.size
+
+        return n_params
+        
+
 
     def feedforward(self, input_vector):
 
@@ -110,7 +125,7 @@ class NeuralNet(object):
         self.weight_mats[layer_idx] += delta_weight    #the negative of the gradient is above
         self.bias_mats[layer_idx]   += delta_bias_weights
 
-        #-- Keep track of latest delta weights for next iteration/epoch
+        #-- Keep track of latest delta weights for next iteration/epoch to compute momentum term
         self.last_change[layer_idx]      = 1 * delta_weight
         self.last_bias_change[layer_idx] = 1 * delta_bias_weights
 
@@ -138,7 +153,7 @@ class NeuralNet(object):
             if i == 0:   #final layer
                 d_activ = self.output_activation(self.netIns[back_index], derivative=True)
                 d_error = error_func(target,output,derivative=True)
-                delta = d_error * d_activ
+                delta = d_error * d_activ   #this should be the hadamard product, I think
                 #delta = np.multiply(d_error, d_activ)
 
                 gradient_mat  = np.dot(self.netOuts[back_index].T , delta)
@@ -161,7 +176,7 @@ class NeuralNet(object):
                 self._gradient_descent(layer_idx=back_index, gradient_mat=gradient_mat, bias_gradient=bias_grad_mat)
 
 
-    def train(self, input_set, target_set, epochs=1000, batch_size=0, error_threshold=1E-10, error_func=mean_squared_error):
+    def train(self, input_set, target_set, epochs=1000, batch_size=0, error_threshold=1E-10, error_func=mean_squared_error, verbose=True):
 
         if batch_size == 0:     #online training (one sample at a time)
             
@@ -174,8 +189,11 @@ class NeuralNet(object):
 
                     error += self._train_helper(inputs, targets, error_func)
 
+                if verbose and (epoch % 20 == 0):
+                    self._print_training_info(epoch, epochs, error, error_threshold)
+
                 if error <= error_threshold:
-                    print(f"\t-> error {error} is lower than threshold {error_threshold}")
+                    print(f"\t-> error {error} is lower than threshold {error_threshold}\n\tStopped at epoch {epoch}")
                     break
 
         elif batch_size == -1:     #batch training (use full training set)
@@ -188,14 +206,22 @@ class NeuralNet(object):
 
                 error += self._train_helper(inputs, targets, error_func)
 
+
+                if verbose and (epoch % 20 == 0):
+                    self._print_training_info(epoch, epochs, error, error_threshold)
+                
                 if error <= error_threshold:
-                        print(f"\t-> error {error} is lower than threshold {error_threshold}")
+                        print(f"\t-> error {error} is lower than threshold {error_threshold}\n\tStopped at epoch {epoch}")
                         break
                 
         else:   #handle mini-batches later
             print("\t-> PROBLEM: mini-batches not supported yet. Choose batch_size 0 or -1")
 
         return error
+
+    def _print_training_info(self, curr_epoch, total_epochs, curr_error, error_threshold):
+        text = f"""{'-'*45}\n\t-> training step: :{curr_epoch}/{total_epochs}\n\t\t* current error: {curr_error}, threshold: {error_threshold}\n"""
+        print(text)
 
     def _train_helper(self, input_set, target_set, error_func):
         nnet_output = self.feedforward(input_set)
